@@ -1,0 +1,176 @@
+	/*
+	Name: Mariah Harilall
+	*/
+
+
+	import java.util.Scanner;
+	public class Matrix {
+		public static void main(String[] args) {
+
+		Scanner input = new Scanner(System.in);
+
+
+		//Prompt user to enter columns
+		System.out.println("Enter a number of columns: ");
+		int columns = input.nextInt(); //Read in num and assign to columns
+		//Remprompt user if input is invalid
+		while (columns > 5 || columns < 1) {
+			System.out.println("Enter a number of columns: ");
+			columns = input.nextInt();
+		
+		}
+
+		//Prompt user to enter rows
+		System.out.println("Enter a number of rows: ");
+		int rows = input.nextInt();  //Read in number and assing to amount of rows
+		//Remprompt user if input is invalid
+		while (rows > 5 || rows < 1) {
+			System.out.println("Enter a number of rows: ");
+			rows = input.nextInt();
+		}
+
+		//Declare and create multi dimensional array
+		int[][] matrix = new int[rows][columns];
+
+		//Declare counter
+		int counter = 0;
+
+		//PROCESS ARRAY
+		for (int row = 0; row < matrix.length; row++) {
+	 		for (int col = 0; col < matrix[row].length; col++) {
+	 			if (row != 0 && col == 0) { //If the column is at index 0 and is any row EXCEPT the first one
+	 				matrix[row][col] = matrix[row - 1][0] + 10; //Position of row and column == increment of 10 based off the position of the same column, previous row
+	 				counter = matrix[row][col] + 1;
+	 				continue;
+	 			}
+	 			matrix[row][col] += counter;
+	 			counter++;
+		 }
+		}
+
+		displayArray(matrix);
+
+
+		//Display options to user
+		System.out.println("\n\nPick one of the following:" +
+			"\nT transpose\t- Rows become columns (and vice versa)" +
+			"\nC columnSum\t- Calculate the sum of the values in each column" +
+			"\nR reverseRows\t- Reverse all elements in every row of the matrix" +
+			"\nQ quit\t\t- Exit the program\n");
+
+		//Read in user input and assign to variable
+		Scanner sc = new Scanner(System.in);
+		char userInput = sc.next().charAt(0);
+		userInput = Character.toUpperCase(userInput); //Makes input case insensitive
+
+		
+		//Create switch statement to direct user input
+		switch (userInput){
+			case 'T':
+				 //pass to method
+				displayArray(Transpose(matrix));
+				break;
+			case 'C':
+				//Pass to method
+				displayArray1D(sumMatrix(matrix));
+				break;
+			case 'R': 
+				//Pass to method
+				displayArray(Reverse(matrix));
+				break;
+			case 'Q':
+				System.out.println("Quitting program. Bye!");
+				break;
+			default:
+				System.out.println("Invalid input.");
+				break;
+		}
+
+
+
+		 } 
+
+
+		 //DISPLAY 2D ARRAY METHOD
+		 public static void displayArray(int[][]matrix) {
+			 for (int row = 0; row < matrix.length; row++) {
+			 	System.out.println();
+			 	for (int col = 0; col < matrix[row].length; col++) {
+			 		System.out.printf("%3s\t",matrix[row][col]);
+			 		
+			 } 
+		}
+
+	}
+
+		//DISPLAY 1D ARRAY METHOD
+		public static void displayArray1D(int[] array){
+			for (int i = 0; i < array.length; i++){
+				System.out.printf("%3s\t",array[i]);
+			}
+		}
+
+		//TRANSPOSE METHOD
+		public static int[][] Transpose (int[][]matrix) {
+			int row = matrix.length;
+			int col = matrix[0].length;
+			int [][] transpose_matrix = new int[col][row];
+			System.out.println("Transposing matrix...");
+			for (int i = 0; i < matrix.length; i++) {
+			 	for (int j = 0; j < matrix[i].length; j++) {
+			 		transpose_matrix[j][i] = matrix[i][j]; 
+			 		
+			 } 
+			}
+			 return transpose_matrix;
+			
+			}
+
+		//SUM UP METHOD
+		public static int[] sumMatrix (int[][] matrix){
+			System.out.println("Summing columns...");
+			int rows = matrix.length;
+			int cols = matrix[0].length;
+			int total = 0;
+			int [] sum_Matrix = new int[cols]; // adds new row to put total at bottom
+			
+				for(cols = 0; cols < matrix[0].length; cols++) {
+					for(rows = 0; rows < matrix.length; rows++) {//iterates through rows
+						total += matrix[rows][cols];
+						if (rows+1 == matrix.length) {//Once done with that column, append total and reset total to 0
+							sum_Matrix[cols] = total;
+							total = 0;
+							continue;
+						
+					}
+					
+				}
+			
+				}
+
+				return sum_Matrix;
+		}
+
+
+		//REVERSE ROWS METHOD
+			public static int[][] Reverse (int[][] matrix){
+				//Create Array
+				int row = matrix.length;
+				int col = matrix[0].length;
+		    	int reverse_array[][]= new int[row][col];
+		    	System.out.println("Reversing matrix...");
+		    	int var = matrix[0].length-1; //used to get last index position
+		    	for(int i=0; i<matrix.length; i++) {
+		    	  for(int j=0; j<matrix[i].length; j++){
+		    	    reverse_array[i][j]=matrix[i][var]; //reverse_array[0][0] = matrix at last index position
+		    	    var--;
+		    	    if (var == -1) {
+		    	    	var = matrix[0].length-1;
+		    	    }
+		    	  }
+		    	}
+		    	
+		    	return reverse_array;
+
+	}	
+	}
